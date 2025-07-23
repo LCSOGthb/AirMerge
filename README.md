@@ -15,6 +15,7 @@ CodeRabbit:
 ![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/LCSOGthb/AirMerge?utm_source=oss&utm_medium=github&utm_campaign=LCSOGthb%2FAirMerge&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
 
 CodeFactor:
+[![CodeFactor](https://www.codefactor.io/repository/github/lcsogthb/airmerge/badge)](https://www.codefactor.io/repository/github/lcsogthb/airmerge)
 
 Codacy:
 
@@ -23,6 +24,9 @@ Codecov:
 CircleCI:
 
 DeepSource:
+[![DeepSource](https://app.deepsource.com/gh/LCSOGthb/AirMerge.svg/?label=code+coverage&show_trend=true&token=LJ2nOv3l3JsZKovfH9_UbKjd)](https://app.deepsource.com/gh/LCSOGthb/AirMerge/)
+[![DeepSource](https://app.deepsource.com/gh/LCSOGthb/AirMerge.svg/?label=active+issues&show_trend=true&token=LJ2nOv3l3JsZKovfH9_UbKjd)](https://app.deepsource.com/gh/LCSOGthb/AirMerge/)
+[![DeepSource](https://app.deepsource.com/gh/LCSOGthb/AirMerge.svg/?label=resolved+issues&show_trend=true&token=LJ2nOv3l3JsZKovfH9_UbKjd)](https://app.deepsource.com/gh/LCSOGthb/AirMerge/)
 
 OSSF:
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/LCSOGthb/AirMerge/badge)](https://scorecard.dev/viewer/?uri=github.com/LCSOGthb/AirMerge)
