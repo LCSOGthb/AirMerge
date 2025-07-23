@@ -47,7 +47,7 @@ export default function Dashboard() {
 
   return (
     <div className="dashboard">
-      <h1>Air Quality Dashboard — Shah Alam</h1>
+      <h1>Air Quality Dashboard</h1>
 
       <div className="grid">
         {sources.map(({ title, aqi, comps, time }) => (
