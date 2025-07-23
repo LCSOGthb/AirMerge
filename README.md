@@ -24,6 +24,9 @@ Codecov:
 CircleCI:
 
 DeepSource:
+[![DeepSource](https://app.deepsource.com/gh/LCSOGthb/AirMerge.svg/?label=code+coverage&show_trend=true&token=LJ2nOv3l3JsZKovfH9_UbKjd)](https://app.deepsource.com/gh/LCSOGthb/AirMerge/)
+[![DeepSource](https://app.deepsource.com/gh/LCSOGthb/AirMerge.svg/?label=active+issues&show_trend=true&token=LJ2nOv3l3JsZKovfH9_UbKjd)](https://app.deepsource.com/gh/LCSOGthb/AirMerge/)
+[![DeepSource](https://app.deepsource.com/gh/LCSOGthb/AirMerge.svg/?label=resolved+issues&show_trend=true&token=LJ2nOv3l3JsZKovfH9_UbKjd)](https://app.deepsource.com/gh/LCSOGthb/AirMerge/)
 
 OSSF:
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/LCSOGthb/AirMerge/badge)](https://scorecard.dev/viewer/?uri=github.com/LCSOGthb/AirMerge)
