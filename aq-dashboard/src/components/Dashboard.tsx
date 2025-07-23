@@ -30,6 +30,18 @@ export default function Dashboard() {
       },
       (err) => {
         setError('Unable to retrieve your location: ' + err.message);
+        let msg = '';
+        switch (err.code) {
+          case err.PERMISSION_DENIED:
+            msg = 'Permission denied. Please allow location access in your browser settings.';
+            break;
+          case err.TIMEOUT:
+            msg = 'The request to get your location timed out.'
+            break;
+          default:
+            msg = 'An unknown error occurred.';
+        }
+        setError(msg);
       }
     );
   }, []);
