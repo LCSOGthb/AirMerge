@@ -1,0 +1,35 @@
+@import 'leaflet/dist/leaflet.css';
+.leaflet-container { height: 400px; width: 100%; }
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.card {
+  background: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: 1rem;
+  line-height: 1.4;
+}
+.card h2 {
+  margin-top: 0;
+  font-size: 1.25rem;
+}
+.card p {
+  margin: 0.5rem 0;
+}
+.component-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.component-list li {
+  font-size: 0.9rem;
+  display: flex;
+  justify-content: space-between;
+}
+.chart-container, .map-container {
+    margin: 1.5rem 0;
+}
