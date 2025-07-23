@@ -1,0 +1,17 @@
+{
+  "builds": [
+    {
+      "src": "aq-dashboard/package.json",
+      "use": "@vercel/static-build",
+      "config": { "distDir": "aq-dashboard/build" }
+    },
+    {
+      "src": "aq-dashboard/api/**/*.ts",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    { "src": "/api/(.*)", "dest": "aq-dashboard/api/$1.ts" },
+    { "src": "/(.*)",      "dest": "aq-dashboard/$1" }
+  ]
+}
