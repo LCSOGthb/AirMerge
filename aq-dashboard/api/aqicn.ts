@@ -1,9 +1,7 @@
-// aq-dashboard/api/aqicn.ts
 import type { VercelRequest, VercelResponse } from '@vercel/node';
+
 const TOKEN = process.env.AQICN_TOKEN!;
-if (!TOKEN) {
-  throw new Error('Missing environment variable AQICN_TOKEN');
-}
+if (!TOKEN) throw new Error('Missing environment variable AQICN_TOKEN');
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
