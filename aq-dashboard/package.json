@@ -1,6 +1,6 @@
 {
-  "type": "module"
   "name": "aq-dashboard",
+  "type": "module",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
