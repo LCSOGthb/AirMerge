@@ -1,0 +1,91 @@
+version = 1
+
+[[analyzers]]
+name = "ruby"
+
+[[analyzers]]
+name = "rust"
+
+  [analyzers.meta]
+  msrv = "stable"
+
+[[analyzers]]
+name = "javascript"
+
+  [analyzers.meta]
+  plugins = [
+    "react",
+    "angular",
+    "meteor",
+    "angularjs",
+    "ember",
+    "vue"
+  ]
+  environment = [
+    "nodejs",
+    "jquery",
+    "mongo",
+    "cypress",
+    "vitest",
+    "mocha",
+    "jasmine",
+    "browser",
+    "jest"
+  ]
+
+[[analyzers]]
+name = "scala"
+
+[[analyzers]]
+name = "shell"
+
+[[analyzers]]
+name = "secrets"
+
+[[analyzers]]
+name = "terraform"
+
+[[analyzers]]
+name = "swift"
+
+[[analyzers]]
+name = "sql"
+
+[[analyzers]]
+name = "test-coverage"
+
+[[analyzers]]
+name = "cxx"
+
+[[analyzers]]
+name = "csharp"
+
+[[analyzers]]
+name = "ansible"
+
+[[transformers]]
+name = "dotnet-format"
+
+[[transformers]]
+name = "clang-format"
+
+[[transformers]]
+name = "scalafmt"
+
+[[transformers]]
+name = "swift-format"
+
+[[transformers]]
+name = "prettier"
+
+[[transformers]]
+name = "standardjs"
+
+[[transformers]]
+name = "rustfmt"
+
+[[transformers]]
+name = "standardrb"
+
+[[transformers]]
+name = "rubocop"
