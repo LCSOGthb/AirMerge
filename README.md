@@ -15,6 +15,7 @@ CodeRabbit:
 ![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/LCSOGthb/AirMerge?utm_source=oss&utm_medium=github&utm_campaign=LCSOGthb%2FAirMerge&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
 
 CodeFactor:
+[![CodeFactor](https://www.codefactor.io/repository/github/lcsogthb/airmerge/badge)](https://www.codefactor.io/repository/github/lcsogthb/airmerge)
 
 Codacy:
 
