@@ -1,4 +1,3 @@
-// src/components/Dashboard.tsx
 import React, { useEffect, useState } from 'react';
 import { fetchOwm, fetchAqicn } from '../api';
 import ChartComp from './ChartComp';
@@ -6,28 +5,63 @@ import MapComp from './MapComp';
 import './Dashboard.css';
 
 type Pollutant = { dt: number; aqi: number };
+type Coords = { lat: number; lon: number };
 
 export default function Dashboard() {
+  // 1️⃣ Geolocation state
+  const [coords, setCoords] = useState<Coords | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  // 2️⃣ API data state
   const [owmCurr, setOwmCurr] = useState<any>(null);
   const [owmF, setOwmF] = useState<Pollutant[]>([]);
   const [owmH, setOwmH] = useState<Pollutant[]>([]);
   const [aq, setAq] = useState<any>(null);
 
+  // 3️⃣ Ask for GPS once on mount
   useEffect(() => {
-    const lat = 3.0738, lon = 101.5183;
+    if (!navigator.geolocation) {
+      setError('Geolocation is not supported by this browser.');
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      ({ coords: { latitude, longitude } }) => {
+        setCoords({ lat: latitude, lon: longitude });
+      },
+      (err) => {
+        setError('Unable to retrieve your location: ' + err.message);
+      }
+    );
+  }, []);
+
+  // 4️⃣ Fetch AQ data when we have coords
+  useEffect(() => {
+    if (!coords) return;
+    const { lat, lon } = coords;
+    const now = Math.floor(Date.now() / 1000);
+
     fetchOwm('air_pollution', lat, lon).then(setOwmCurr);
     fetchOwm('forecast', lat, lon).then(r =>
       setOwmF(r.list.map((d: any) => ({ dt: d.dt, aqi: d.main.aqi * 50 })))
     );
-    const now = Math.floor(Date.now() / 1000);
     fetchOwm('history', lat, lon, now - 86400, now).then(r =>
       setOwmH(r.list.map((d: any) => ({ dt: d.dt, aqi: d.main.aqi * 50 })))
     );
     fetchAqicn(lat, lon).then(setAq);
-  }, []);
+  }, [coords]);
 
-  if (!owmCurr || !aq) return <div className="dashboard">Loading…</div>;
+  // 5️⃣ Conditional renders
+  if (error) {
+    return <div className="dashboard error">{error}</div>;
+  }
+  if (!coords) {
+    return <div className="dashboard">Waiting for location…</div>;
+  }
+  if (!owmCurr || !aq) {
+    return <div className="dashboard">Loading air quality…</div>;
+  }
 
+  // 6️⃣ Prepare data sources
   const sources = [
     {
       title: 'OpenWeatherMap',
@@ -47,7 +81,7 @@ export default function Dashboard() {
 
   return (
     <div className="dashboard">
-      <h1>Air Quality Dashboard</h1>
+      <h1>AirMerge</h1>
 
       <div className="grid">
         {sources.map(({ title, aqi, comps, time }) => (
@@ -78,7 +112,7 @@ export default function Dashboard() {
 
       <h2>🗺️ Map Overlay</h2>
       <div className="map-container">
-        <MapComp lat={3.0738} lon={101.5183} />
+        <MapComp lat={coords.lat} lon={coords.lon} />
       </div>
     </div>
   );
