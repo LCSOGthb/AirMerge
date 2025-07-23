@@ -12,6 +12,7 @@
 ![GitHub top language](https://img.shields.io/github/languages/top/LCSOGthb/AirMerge)
 
 CodeRabbit:
+![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/LCSOGthb/AirMerge?utm_source=oss&utm_medium=github&utm_campaign=LCSOGthb%2FAirMerge&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
 
 CodeFactor:
 
@@ -32,3 +33,14 @@ Scrutinizer:
 Snyk:
 
 SonarQube Cloud:
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_AirMerge&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_AirMerge)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_AirMerge&metric=bugs)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_AirMerge)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_AirMerge&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_AirMerge)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_AirMerge&metric=coverage)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_AirMerge)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_AirMerge&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_AirMerge)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_AirMerge&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_AirMerge)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_AirMerge&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_AirMerge)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_AirMerge&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_AirMerge)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_AirMerge&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_AirMerge)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_AirMerge&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_AirMerge)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_AirMerge&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_AirMerge)
