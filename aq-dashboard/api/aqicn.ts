@@ -1,6 +1,7 @@
 // aq-dashboard/api/aqicn.ts
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import fetch from 'node-fetch';
+const TOKEN = process.env.AQICN_TOKEN!;
 
 const TOKEN = process.env.AQICN_TOKEN!;
 
