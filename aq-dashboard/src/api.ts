@@ -1,8 +1,10 @@
+// src/api.ts
 import axios from 'axios';
 
-// Base URL for your backend
-const BACKEND = 'http://localhost:3001';
-
+/**
+ * Fetch OpenWeatherMap air pollution data (current, forecast, history)
+ * via your Vercel Serverless Functions under /api/owm/[type].
+ */
 export const fetchOwm = (
   type: 'air_pollution' | 'forecast' | 'history',
   lat: number,
@@ -11,14 +13,17 @@ export const fetchOwm = (
   end?: number
 ) => {
   return axios
-    .get(`${BACKEND}/api/owm/${type}`, {
+    .get(`/api/owm/${type}`, {
       params: { lat, lon, ...(start && { start }), ...(end && { end }) }
     })
     .then(res => res.data);
 };
 
+/**
+ * Fetch AQICN data via your Serverless Function at /api/aqicn.
+ */
 export const fetchAqicn = (lat: number, lon: number) => {
   return axios
-    .get(`${BACKEND}/api/aqicn`, { params: { lat, lon } })
+    .get(`/api/aqicn`, { params: { lat, lon } })
     .then(res => res.data);
 };
