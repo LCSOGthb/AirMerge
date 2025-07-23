@@ -25,6 +25,7 @@ CircleCI:
 DeepSource:
 
 OSSF:
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/LCSOGthb/AirMerge/badge)](https://scorecard.dev/viewer/?uri=github.com/LCSOGthb/AirMerge)
 
 Qlty:
 
