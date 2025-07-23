@@ -29,7 +29,6 @@ export default function Dashboard() {
         setCoords({ lat: latitude, lon: longitude });
       },
       (err) => {
-        setError('Unable to retrieve your location: ' + err.message);
         let msg = '';
         switch (err.code) {
           case err.PERMISSION_DENIED:
@@ -63,12 +62,28 @@ export default function Dashboard() {
   }, [coords]);
 
   // 5️⃣ Conditional renders
-  if (error) {
-    return <div className="dashboard error">{error}</div>;
-  }
-  if (!coords) {
-    return <div className="dashboard">Waiting for location…</div>;
-  }
+if (!coords) {
+  return (
+    <div className="Dashboard Error">
+      <p>{error || 'Waiting for location…'}</p>
+      <button
+        onClick={() => {
+          const input = window.prompt('Enter location as "lat,lon" (e.g. 3.0738,101.5183)');
+          if (!input) return;
+          const parts = input.split(',').map(p => parseFloat(p.trim()));
+          if (parts.length === 2 && parts.every(n => !isNaN(n))) {
+            setCoords({ lat: parts[0], lon: parts[1] });
+            setError(null); // clear error on success
+          } else {
+            setError('Invalid format. Please enter valid coordinates.');
+          }
+        }}
+      >
+        Enter location manually
+      </button>
+    </div>
+  );
+}
   if (!owmCurr || !aq) {
     return <div className="dashboard">Loading air quality…</div>;
   }
