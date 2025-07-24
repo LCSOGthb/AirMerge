@@ -39,8 +39,11 @@ Qlty:
 [![Code Coverage](https://qlty.sh/gh/LCSOGthb/projects/AirMerge/coverage.svg)](https://qlty.sh/gh/LCSOGthb/projects/AirMerge)
 
 Scrutinizer:
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/LCSOGthb/AirMerge/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/LCSOGthb/AirMerge/?branch=main)
+[![Build Status](https://scrutinizer-ci.com/g/LCSOGthb/AirMerge/badges/build.png?b=main)](https://scrutinizer-ci.com/g/LCSOGthb/AirMerge/build-status/main)
 
 Snyk:
+[![Known Vulnerabilities](https://snyk.io/test/github/LCSOGthb/AirMerge/badge.svg)](https://snyk.io/test/github/LCSOGthb/AirMerge)
 
 SonarQube Cloud:
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_AirMerge&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_AirMerge)
