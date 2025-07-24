@@ -38,7 +38,7 @@ export default function Dashboard() {
             msg = 'The request to get your location timed out.'
             break;
           default:
-            msg = 'An unknown error occurred.';
+            msg = 'An Unknown Error Occurred.';
         }
         setError(msg);
       }
@@ -85,7 +85,7 @@ if (!coords) {
   );
 }
   if (!owmCurr || !aq) {
-    return <div className="dashboard">Loading air quality…</div>;
+    return <div className="dashboard">Loading Air Quality…</div>;
   }
 
   // 6️⃣ Prepare data sources
