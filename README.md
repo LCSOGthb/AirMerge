@@ -18,10 +18,13 @@ CodeFactor:
 [![CodeFactor](https://www.codefactor.io/repository/github/lcsogthb/airmerge/badge)](https://www.codefactor.io/repository/github/lcsogthb/airmerge)
 
 Codacy:
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/a75355dc334f45a089a81b86ddf44e2c)](https://app.codacy.com/gh/LCSOGthb/AirMerge/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
 Codecov:
+[![codecov](https://codecov.io/github/LCSOGthb/AirMerge/graph/badge.svg?token=32FPe0FucX)](https://codecov.io/github/LCSOGthb/AirMerge)
 
 CircleCI:
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/LCSOGthb/AirMerge/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/LCSOGthb/AirMerge/tree/main)
 
 DeepSource:
 [![DeepSource](https://app.deepsource.com/gh/LCSOGthb/AirMerge.svg/?label=code+coverage&show_trend=true&token=LJ2nOv3l3JsZKovfH9_UbKjd)](https://app.deepsource.com/gh/LCSOGthb/AirMerge/)
@@ -32,10 +35,15 @@ OSSF:
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/LCSOGthb/AirMerge/badge)](https://scorecard.dev/viewer/?uri=github.com/LCSOGthb/AirMerge)
 
 Qlty:
+[![Maintainability](https://qlty.sh/gh/LCSOGthb/projects/AirMerge/maintainability.svg)](https://qlty.sh/gh/LCSOGthb/projects/AirMerge)
+[![Code Coverage](https://qlty.sh/gh/LCSOGthb/projects/AirMerge/coverage.svg)](https://qlty.sh/gh/LCSOGthb/projects/AirMerge)
 
 Scrutinizer:
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/LCSOGthb/AirMerge/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/LCSOGthb/AirMerge/?branch=main)
+[![Build Status](https://scrutinizer-ci.com/g/LCSOGthb/AirMerge/badges/build.png?b=main)](https://scrutinizer-ci.com/g/LCSOGthb/AirMerge/build-status/main)
 
 Snyk:
+[![Known Vulnerabilities](https://snyk.io/test/github/LCSOGthb/AirMerge/badge.svg)](https://snyk.io/test/github/LCSOGthb/AirMerge)
 
 SonarQube Cloud:
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_AirMerge&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_AirMerge)
