@@ -8,17 +8,17 @@ type Pollutant = { dt: number; aqi: number };
 type Coords = { lat: number; lon: number };
 
 export default function Dashboard() {
-  // 1️⃣ Geolocation state
+  // Geolocation & error state
   const [coords, setCoords] = useState<Coords | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  // 2️⃣ API data state
+  // API data state
   const [owmCurr, setOwmCurr] = useState<any>(null);
   const [owmF, setOwmF] = useState<Pollutant[]>([]);
   const [owmH, setOwmH] = useState<Pollutant[]>([]);
   const [aq, setAq] = useState<any>(null);
 
-  // 3️⃣ Ask for GPS once on mount
+  // Ask for GPS once on mount
   useEffect(() => {
     if (!navigator.geolocation) {
       setError('Geolocation is not supported by this browser.');
@@ -29,23 +29,27 @@ export default function Dashboard() {
         setCoords({ lat: latitude, lon: longitude });
       },
       (err) => {
-        let msg = '';
+        let msg: string;
         switch (err.code) {
           case err.PERMISSION_DENIED:
             msg = 'Permission denied. Please allow location access in your browser settings.';
             break;
+          case err.POSITION_UNAVAILABLE:
+            msg = 'Location information is unavailable.';
+            break;
           case err.TIMEOUT:
-            msg = 'The request to get your location timed out.'
+            msg = 'The request to get your location timed out.';
             break;
           default:
             msg = 'An unknown error occurred.';
         }
+        console.error('Geolocation error', err.code, err.message);
         setError(msg);
       }
     );
   }, []);
 
-  // 4️⃣ Fetch AQ data when we have coords
+  // Fetch AQ data when we have coords
   useEffect(() => {
     if (!coords) return;
     const { lat, lon } = coords;
@@ -61,34 +65,63 @@ export default function Dashboard() {
     fetchAqicn(lat, lon).then(setAq);
   }, [coords]);
 
-  // 5️⃣ Conditional renders
-if (!coords) {
-  return (
-    <div className="Dashboard Error">
-      <p>{error || 'Waiting for location…'}</p>
-      <button
-        onClick={() => {
-          const input = window.prompt('Enter location as "lat,lon" (e.g. 3.0738,101.5183)');
-          if (!input) return;
-          const parts = input.split(',').map(p => parseFloat(p.trim()));
-          if (parts.length === 2 && parts.every(n => !isNaN(n))) {
-            setCoords({ lat: parts[0], lon: parts[1] });
-            setError(null); // clear error on success
-          } else {
-            setError('Invalid format. Please enter valid coordinates.');
-          }
-        }}
-      >
-        Enter location manually
-      </button>
-    </div>
-  );
-}
+  // Manual‑entry + waiting state
+  if (!coords) {
+    return (
+      <div className="dashboard">
+        <p>{error || 'Waiting for location…'}</p>
+        <button
+          onClick={async () => {
+            const input = window.prompt(
+              'Enter location as "lat,lon" or place name (e.g. "Banting, Selangor")'
+            );
+            if (!input) return;
+            const parts = input.split(',').map(s => s.trim());
+            // If two numbers: coords
+            if (
+              parts.length === 2 &&
+              !isNaN(+parts[0]) &&
+              !isNaN(+parts[1])
+            ) {
+              setCoords({ lat: +parts[0], lon: +parts[1] });
+              setError(null);
+              return;
+            }
+            // Else try geocoding via OpenStreetMap Nominatim
+            try {
+              const resp = await fetch(
+                `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
+                  input
+                )}&format=json&limit=1`
+              );
+              const results = await resp.json();
+              if (results.length === 0) {
+                setError('Location not found. Try another name.');
+              } else {
+                setCoords({
+                  lat: parseFloat(results[0].lat),
+                  lon: parseFloat(results[0].lon),
+                });
+                setError(null);
+              }
+            } catch (e: any) {
+              console.error('Geocoding error', e);
+              setError('Geocoding failed. Please try again.');
+            }
+          }}
+        >
+          Enter location manually
+        </button>
+      </div>
+    );
+  }
+
+  // Loading state for API data
   if (!owmCurr || !aq) {
     return <div className="dashboard">Loading air quality…</div>;
   }
 
-  // 6️⃣ Prepare data sources
+  // Prepare data sources
   const sources = [
     {
       title: 'OpenWeatherMap',
