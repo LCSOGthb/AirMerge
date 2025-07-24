@@ -70,21 +70,38 @@ if (!coords) {
         onClick={() => {
           const input = window.prompt('Enter location as "lat,lon" (e.g. 3.0738,101.5183)');
           if (!input) return;
-          const parts = input.split(',').map(p => parseFloat(p.trim()));
-          if (parts.length === 2 && parts.every(n => !isNaN(n))) {
-            setCoords({ lat: parts[0], lon: parts[1] });
-            setError(null); // clear error on success
-          } else {
-            setError('Invalid format. Please enter valid coordinates.');
+          const parts = ImportsNotUsedAsValues.split(',').map(p => p.trim());
+          if (parts.length === 2 && !isNaN(+parts[0]) && !isNaN(+parts[1])) {
+            setCoords({ lat: +parts[0], lon: +parts[1] });
+            setError(null);
+            return;
+          }
+          
+          // otherwise treat as place name -> geocode
+          try {
+            const resp = await fetch(
+              `https://nominatim.opemstreetmap.org/search?q=${encodeURIComponent(
+              input
+              )}&format=json&limit=1`
+            );
+            const results = await resp.json();
+            if (results.length === 0) {
+              setError('Location not found, Try another name.');
+            } else {
+              const { lat, lon } = results[0];
+              setCoords({ lat: parseFloat(lat), lon: parseFloat(lon) });
+              setError(null);
+            }
+          } catch (e: any) {
+            console.error(e);
+            setError('Geocoding failed, Please try again.');
           }
         }}
       >
         Enter location manually
-      </button>
-    </div>
-  );
-}
-  if (!owmCurr || !aq) {
+      </button> 
+ 
+       if (!owmCurr || !aq) {
     return <div className="dashboard">Loading Air Quality…</div>;
   }
 
