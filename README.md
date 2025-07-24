@@ -23,6 +23,7 @@ Codacy:
 Codecov:
 
 CircleCI:
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/LCSOGthb/AirMerge/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/LCSOGthb/AirMerge/tree/main)
 
 DeepSource:
 [![DeepSource](https://app.deepsource.com/gh/LCSOGthb/AirMerge.svg/?label=code+coverage&show_trend=true&token=LJ2nOv3l3JsZKovfH9_UbKjd)](https://app.deepsource.com/gh/LCSOGthb/AirMerge/)
