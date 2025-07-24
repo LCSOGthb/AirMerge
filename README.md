@@ -21,6 +21,7 @@ Codacy:
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/a75355dc334f45a089a81b86ddf44e2c)](https://app.codacy.com/gh/LCSOGthb/AirMerge/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
 Codecov:
+[![codecov](https://codecov.io/github/LCSOGthb/AirMerge/graph/badge.svg?token=32FPe0FucX)](https://codecov.io/github/LCSOGthb/AirMerge)
 
 CircleCI:
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/LCSOGthb/AirMerge/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/LCSOGthb/AirMerge/tree/main)
@@ -34,6 +35,8 @@ OSSF:
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/LCSOGthb/AirMerge/badge)](https://scorecard.dev/viewer/?uri=github.com/LCSOGthb/AirMerge)
 
 Qlty:
+[![Maintainability](https://qlty.sh/gh/LCSOGthb/projects/AirMerge/maintainability.svg)](https://qlty.sh/gh/LCSOGthb/projects/AirMerge)
+[![Code Coverage](https://qlty.sh/gh/LCSOGthb/projects/AirMerge/coverage.svg)](https://qlty.sh/gh/LCSOGthb/projects/AirMerge)
 
 Scrutinizer:
 
