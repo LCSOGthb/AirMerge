@@ -32,18 +32,18 @@ export default function Dashboard() {
         let msg: string;
         switch (err.code) {
           case err.PERMISSION_DENIED:
-            msg = 'Permission denied. Please allow location access in your browser settings.';
+            msg = 'Permission Denied. Please allow location access in your browser settings.';
             break;
           case err.POSITION_UNAVAILABLE:
-            msg = 'Location information is unavailable.';
+            msg = 'Location Information is Unavailable.';
             break;
           case err.TIMEOUT:
             msg = 'The request to get your location timed out.';
             break;
           default:
-            msg = 'An unknown error occurred.';
+            msg = 'An Unknown Error Occurred.';
         }
-        console.error('Geolocation error', err.code, err.message);
+        console.error('Geolocation Error', err.code, err.message);
         setError(msg);
       }
     );
@@ -69,11 +69,11 @@ export default function Dashboard() {
   if (!coords) {
     return (
       <div className="dashboard">
-        <p>{error || 'Waiting for location…'}</p>
+        <p>{error || 'Waiting For Location…'}</p>
         <button
           onClick={async () => {
             const input = window.prompt(
-              'Enter location as "lat,lon" or place name (e.g. "Banting, Selangor")'
+              'Enter location as "lat,lon" or Place Name (e.g. "Kuala Lumpur")'
             );
             if (!input) return;
             const parts = input.split(',').map(s => s.trim());
@@ -96,7 +96,7 @@ export default function Dashboard() {
               );
               const results = await resp.json();
               if (results.length === 0) {
-                setError('Location not found. Try another name.');
+                setError('Location Not Found. Try Another Name.');
               } else {
                 setCoords({
                   lat: parseFloat(results[0].lat),
@@ -105,12 +105,12 @@ export default function Dashboard() {
                 setError(null);
               }
             } catch (e: any) {
-              console.error('Geocoding error', e);
-              setError('Geocoding failed. Please try again.');
+              console.error('Geocoding Error', e);
+              setError('Geocoding Failed. Please Try Again.');
             }
           }}
         >
-          Enter location manually
+          Enter Location Manually
         </button>
       </div>
     );
@@ -118,7 +118,7 @@ export default function Dashboard() {
 
   // Loading state for API data
   if (!owmCurr || !aq) {
-    return <div className="dashboard">Loading air quality…</div>;
+    return <div className="dashboard">Loading Air Quality…</div>;
   }
 
   // Prepare data sources
