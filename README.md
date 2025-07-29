@@ -2,7 +2,6 @@
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/LCSOGthb/AirMerge)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/y/LCSOGthb/AirMerge)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/t/LCSOGthb/AirMerge)
-![GitHub commits since latest release](https://img.shields.io/github/commits-since/LCSOGthb/AirMerge/latest)
 ![GitHub contributors](https://img.shields.io/github/contributors/LCSOGthb/AirMerge)
 ![GitHub contributors](https://img.shields.io/github/contributors-anon/LCSOGthb/AirMerge)
 ![GitHub contributors from allcontributors.org](https://img.shields.io/github/all-contributors/LCSOGthb/AirMerge)
@@ -14,6 +13,9 @@
 ![GitHub top language](https://img.shields.io/github/languages/top/LCSOGthb/AirMerge)
 ![GitHub branch check runs](https://img.shields.io/github/check-runs/LCSOGthb/AirMerge/main)
 ![GitHub branch status](https://img.shields.io/github/checks-status/LCSOGthb/AirMerge/main)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/LCSOGthb/AirMerge)
+![GitHub repo file or directory count](https://img.shields.io/github/directory-file-count/LCSOGthb/AirMerge)
+![GitHub repo size](https://img.shields.io/github/repo-size/LCSOGthb/AirMerge)
 
 CodeRabbit:
 ![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/LCSOGthb/AirMerge?utm_source=oss&utm_medium=github&utm_campaign=LCSOGthb%2FAirMerge&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
