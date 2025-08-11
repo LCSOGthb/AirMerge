@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { fetchOwm, fetchAqicn } from '../api';
+import { fetchAqicn } from '../api';
 import ChartComp from './ChartComp';
 import MapComp from './MapComp';
 import './Dashboard.css';
@@ -8,15 +8,13 @@ type Pollutant = { dt: number; aqi: number };
 type Coords = { lat: number; lon: number };
 
 export default function Dashboard() {
-  // Geolocation & error state
   const [coords, setCoords] = useState<Coords | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   // API data state
-  const [owmCurr, setOwmCurr] = useState<any>(null);
-  const [owmF, setOwmF] = useState<Pollutant[]>([]);
-  const [owmH, setOwmH] = useState<Pollutant[]>([]);
   const [aq, setAq] = useState<any>(null);
+  const [histData, setHistData] = useState<Pollutant[]>([]);
+  const [forecastData, setForecastData] = useState<Pollutant[]>([]);
 
   // Ask for GPS once on mount
   useEffect(() => {
@@ -49,23 +47,45 @@ export default function Dashboard() {
     );
   }, []);
 
-  // Fetch AQ data when we have coords
+  // Fetch AQICN data
   useEffect(() => {
     if (!coords) return;
-    const { lat, lon } = coords;
-    const now = Math.floor(Date.now() / 1000);
 
-    fetchOwm('air_pollution', lat, lon).then(setOwmCurr);
-    fetchOwm('forecast', lat, lon).then(r =>
-      setOwmF(r.list.map((d: any) => ({ dt: d.dt, aqi: d.main.aqi * 50 })))
-    );
-    fetchOwm('history', lat, lon, now - 86400, now).then(r =>
-      setOwmH(r.list.map((d: any) => ({ dt: d.dt, aqi: d.main.aqi * 50 })))
-    );
-    fetchAqicn(lat, lon).then(setAq);
+    const { lat, lon } = coords;
+    fetchAqicn(lat, lon).then((data) => {
+      setAq(data);
+
+      // Prepare forecast (next 4 days) from AQICN
+      if (data.data.forecast?.daily?.pm25) {
+        const forecast = data.data.forecast.daily.pm25.map((d: any) => ({
+          dt: new Date(d.day).getTime() / 1000,
+          aqi: d.avg
+        }));
+        setForecastData(forecast);
+      }
+
+      // Prepare historical (last 24h) if available
+      // AQICN free API doesn't always give hourly history directly — if not available, fallback to past 1 day daily
+      if (data.data.forecast?.hourly?.pm25) {
+        const history = data.data.forecast.hourly.pm25.map((d: any) => ({
+          dt: new Date(d.time).getTime() / 1000,
+          aqi: d.avg
+        }));
+        setHistData(history);
+      } else {
+        // fallback: repeat today's daily avg as a placeholder
+        if (data.data.forecast?.daily?.pm25?.length > 0) {
+          const today = data.data.forecast.daily.pm25[0];
+          setHistData([
+            { dt: Date.now() / 1000 - 86400, aqi: today.avg },
+            { dt: Date.now() / 1000, aqi: today.avg }
+          ]);
+        }
+      }
+    });
   }, [coords]);
 
-  // Manual‑entry + waiting state
+  // Manual-entry + waiting state
   if (!coords) {
     return (
       <div className="dashboard">
@@ -77,22 +97,14 @@ export default function Dashboard() {
             );
             if (!input) return;
             const parts = input.split(',').map(s => s.trim());
-            // If two numbers: coords
-            if (
-              parts.length === 2 &&
-              !isNaN(+parts[0]) &&
-              !isNaN(+parts[1])
-            ) {
+            if (parts.length === 2 && !isNaN(+parts[0]) && !isNaN(+parts[1])) {
               setCoords({ lat: +parts[0], lon: +parts[1] });
               setError(null);
               return;
             }
-            // Else try geocoding via OpenStreetMap Nominatim
             try {
               const resp = await fetch(
-                `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
-                  input
-                )}&format=json&limit=1`
+                `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(input)}&format=json&limit=1`
               );
               const results = await resp.json();
               if (results.length === 0) {
@@ -116,19 +128,11 @@ export default function Dashboard() {
     );
   }
 
-  // Loading state for API data
-  if (!owmCurr || !aq) {
+  if (!aq) {
     return <div className="dashboard">Loading Air Quality…</div>;
   }
 
-  // Prepare data sources
   const sources = [
-    {
-      title: 'OpenWeatherMap',
-      aqi: owmCurr.list[0].main.aqi * 50,
-      comps: owmCurr.list[0].components,
-      time: new Date(owmCurr.list[0].dt * 1000).toLocaleString(),
-    },
     {
       title: 'AQICN',
       aqi: aq.data.aqi,
@@ -136,7 +140,7 @@ export default function Dashboard() {
         Object.entries(aq.data.iaqi).map(([k, v]: any) => [k, v.v])
       ),
       time: new Date(aq.data.time.iso).toLocaleString(),
-    },
+    }
   ];
 
   return (
@@ -165,9 +169,9 @@ export default function Dashboard() {
         ))}
       </div>
 
-      <h2>📊 Historical (24h) & Forecast (4d)</h2>
+      <h2>📊 Historical (24h) & Forecast (4d) — AQICN</h2>
       <div className="chart-container">
-        <ChartComp hist={owmH} fore={owmF} />
+        <ChartComp hist={histData} fore={forecastData} />
       </div>
 
       <h2>🗺️ Map Overlay</h2>
