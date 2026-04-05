@@ -4,15 +4,25 @@ jobs:
   say-hello:
     docker:
       - image: cimg/base:current
-
     steps:
       - checkout
-
       - run:
           name: Say Hello
           command: echo "Hello, World!"
+
+  deploy:
+    docker:
+      - image: cimg/base:current
+    steps:
+      - checkout
+      - run:
+          name: Deploy
+          command: echo "Deploying application..."
 
 workflows:
   say-hello-workflow:
     jobs:
       - say-hello
+      - deploy:
+          requires:
+            - say-hello
