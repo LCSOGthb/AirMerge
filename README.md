@@ -20,9 +20,6 @@ CodeRabbit:
 CodeFactor:
 [![CodeFactor](https://www.codefactor.io/repository/github/lcsogthb/airmerge/badge)](https://www.codefactor.io/repository/github/lcsogthb/airmerge)
 
-Codacy:
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/a75355dc334f45a089a81b86ddf44e2c)](https://app.codacy.com/gh/LCSOGthb/AirMerge/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
-
 Codecov:
 [![codecov](https://codecov.io/github/LCSOGthb/AirMerge/graph/badge.svg?token=32FPe0FucX)](https://codecov.io/github/LCSOGthb/AirMerge)
 
