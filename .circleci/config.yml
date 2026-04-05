@@ -18,9 +18,14 @@ jobs:
     steps:
       # Checkout the code as the first step.
       - checkout
-      - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
+- run:
+    name: Update a deploy to SUCCESS
+    command: circleci run release update --status=SUCCESS 
+    when: on_success 
+- run:
+    name: Update planned deploy to FAILED
+    command: circleci run release update --status=FAILED 
+    when: on_fail
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/guides/orchestrate/workflows/ & https://circleci.com/docs/reference/configuration-reference/#workflows
