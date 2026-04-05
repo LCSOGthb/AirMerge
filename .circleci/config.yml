@@ -2,7 +2,21 @@
 # See: https://circleci.com/docs/configuration-reference
 version: 2.1
 
+orbs:
+  node: circleci/node@6
+
 jobs:
+  validate-config:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run:
+          name: Validate CircleCI configuration syntax
+          command: |
+            curl -fLSs https://raw.githubusercontent.com/CircleCI-Public/circleci-cli/main/install.sh | bash -s -- --no-sudo --install-dir /tmp/circleci-cli
+            /tmp/circleci-cli/circleci config validate .circleci/config.yml
+
   build:
     docker:
       - image: cimg/node:22.19
@@ -16,8 +30,13 @@ jobs:
           name: Build
           command: npm run build
           working_directory: aq-dashboard
+      - run:
+          name: Test
+          command: npm test -- --watchAll=false --passWithNoTests
+          working_directory: aq-dashboard
 
 workflows:
   build-workflow:
     jobs:
+      - validate-config
       - build
