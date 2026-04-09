@@ -4,7 +4,7 @@ import ChartComp from "./ChartComp";
 import MapComp from "./MapComp";
 import "./Dashboard.css";
 
-type Pollutant = { dt: number; aqi: number };
+type Pollutant = { dt: number | null; aqi: number | null };
 type Coords = { lat: number; lon: number };
 
 export default function Dashboard() {
