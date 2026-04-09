@@ -66,20 +66,24 @@ export default function Dashboard() {
         // Forecast (next 4 days)
         const dailyPm25 = data.data.forecast?.daily?.pm25 ?? [];
         setForecastData(
-          dailyPm25.map((d: any) => ({
-            dt: d.day ? new Date(d.day).getTime() / 1000 : null,
-            aqi: d.avg ?? null,
-          })),
+          dailyPm25
+            .map((d: any) => ({
+              dt: d.day ? new Date(d.day).getTime() / 1000 : null,
+              aqi: d.avg ?? null,
+            }))
+            .filter((item: Pollutant) => item.dt !== null && item.aqi !== null),
         );
 
         // Historical (last 24h) or fallback
         const hourlyPm25 = data.data.forecast?.hourly?.pm25 ?? [];
         if (hourlyPm25.length > 0) {
           setHistData(
-            hourlyPm25.map((d: any) => ({
-              dt: d.time ? new Date(d.time).getTime() / 1000 : null,
-              aqi: d.avg ?? null,
-            })),
+            hourlyPm25
+              .map((d: any) => ({
+                dt: d.time ? new Date(d.time).getTime() / 1000 : null,
+                aqi: d.avg ?? null,
+              }))
+              .filter((item: Pollutant) => item.dt !== null && item.aqi !== null),
           );
         } else if (dailyPm25.length > 0) {
           const today = dailyPm25[0];
