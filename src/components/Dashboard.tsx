@@ -57,6 +57,7 @@ export default function Dashboard() {
         if (!data?.data) {
           console.error('Invalid API response:', data);
           setError('Failed to load AQI data');
+          setAq(null);
           return;
         }
         setAq(data);
@@ -65,8 +66,8 @@ export default function Dashboard() {
         const dailyPm25 = data.data.forecast?.daily?.pm25 ?? [];
         setForecastData(
           dailyPm25.map((d: any) => ({
-            dt: new Date(d.day).getTime() / 1000,
-            aqi: d.avg ?? 0,
+            dt: d.day ? new Date(d.day).getTime() / 1000 : null,
+            aqi: d.avg ?? null,
           }))
         );
 
@@ -75,15 +76,15 @@ export default function Dashboard() {
         if (hourlyPm25.length > 0) {
           setHistData(
             hourlyPm25.map((d: any) => ({
-              dt: new Date(d.time).getTime() / 1000,
-              aqi: d.avg ?? 0,
+              dt: d.time ? new Date(d.time).getTime() / 1000 : null,
+              aqi: d.avg ?? null,
             }))
           );
         } else if (dailyPm25.length > 0) {
           const today = dailyPm25[0];
           setHistData([
-            { dt: Date.now() / 1000 - 86400, aqi: today.avg ?? 0 },
-            { dt: Date.now() / 1000, aqi: today.avg ?? 0 },
+            { dt: Date.now() / 1000 - 86400, aqi: today.avg ?? null },
+            { dt: Date.now() / 1000, aqi: today.avg ?? null },
           ]);
         } else {
           setHistData([]);
@@ -92,6 +93,7 @@ export default function Dashboard() {
       .catch((err) => {
         console.error('Failed to fetch AQI:', err);
         setError('Failed to fetch AQI data');
+        setAq(null);
       });
   }, [coords]);
 
