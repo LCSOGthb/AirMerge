@@ -6,6 +6,9 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import * as Sentry from "@sentry/react";
 
+const root = ReactDOM.createRoot(document.getElementById('root')!);
+root.render(<App />);
+
 Sentry.init({
   dsn: "https://ea94094f4f9d059f512a93c7d8ba3aca@o4509151884148736.ingest.us.sentry.io/4509826175401984",
   sendDefaultPii: true

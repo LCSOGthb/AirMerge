@@ -52,40 +52,49 @@ export default function Dashboard() {
     if (!coords) return;
 
     const { lat, lon } = coords;
-    fetchAqicn(lat, lon).then((data) => {
-      setAq(data);
-
-      // Prepare forecast (next 4 days) from AQICN
-      if (data.data.forecast?.daily?.pm25) {
-        const forecast = data.data.forecast.daily.pm25.map((d: any) => ({
-          dt: new Date(d.day).getTime() / 1000,
-          aqi: d.avg
-        }));
-        setForecastData(forecast);
-      }
-
-      // Prepare historical (last 24h) if available
-      // AQICN free API doesn't always give hourly history directly — if not available, fallback to past 1 day daily
-      if (data.data.forecast?.hourly?.pm25) {
-        const history = data.data.forecast.hourly.pm25.map((d: any) => ({
-          dt: new Date(d.time).getTime() / 1000,
-          aqi: d.avg
-        }));
-        setHistData(history);
-      } else {
-        // fallback: repeat today's daily avg as a placeholder
-        if (data.data.forecast?.daily?.pm25?.length > 0) {
-          const today = data.data.forecast.daily.pm25[0];
-          setHistData([
-            { dt: Date.now() / 1000 - 86400, aqi: today.avg },
-            { dt: Date.now() / 1000, aqi: today.avg }
-          ]);
+    fetchAqicn(lat, lon)
+      .then((data) => {
+        if (!data?.data) {
+          console.error('Invalid API response:', data);
+          setError('Failed to load AQI data');
+          return;
         }
-      }
-    });
+        setAq(data);
+
+        // Forecast (next 4 days)
+        const dailyPm25 = data.data.forecast?.daily?.pm25 ?? [];
+        setForecastData(
+          dailyPm25.map((d: any) => ({
+            dt: new Date(d.day).getTime() / 1000,
+            aqi: d.avg ?? 0,
+          }))
+        );
+
+        // Historical (last 24h) or fallback
+        const hourlyPm25 = data.data.forecast?.hourly?.pm25 ?? [];
+        if (hourlyPm25.length > 0) {
+          setHistData(
+            hourlyPm25.map((d: any) => ({
+              dt: new Date(d.time).getTime() / 1000,
+              aqi: d.avg ?? 0,
+            }))
+          );
+        } else if (dailyPm25.length > 0) {
+          const today = dailyPm25[0];
+          setHistData([
+            { dt: Date.now() / 1000 - 86400, aqi: today.avg ?? 0 },
+            { dt: Date.now() / 1000, aqi: today.avg ?? 0 },
+          ]);
+        } else {
+          setHistData([]);
+        }
+      })
+      .catch((err) => {
+        console.error('Failed to fetch AQI:', err);
+        setError('Failed to fetch AQI data');
+      });
   }, [coords]);
 
-  // Manual-entry + waiting state
   if (!coords) {
     return (
       <div className="dashboard">
@@ -96,7 +105,7 @@ export default function Dashboard() {
               'Enter location as "lat,lon" or Place Name (e.g. "Kuala Lumpur")'
             );
             if (!input) return;
-            const parts = input.split(',').map(s => s.trim());
+            const parts = input.split(',').map((s) => s.trim());
             if (parts.length === 2 && !isNaN(+parts[0]) && !isNaN(+parts[1])) {
               setCoords({ lat: +parts[0], lon: +parts[1] });
               setError(null);
@@ -104,10 +113,12 @@ export default function Dashboard() {
             }
             try {
               const resp = await fetch(
-                `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(input)}&format=json&limit=1`
+                `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
+                  input
+                )}&format=json&limit=1`
               );
               const results = await resp.json();
-              if (results.length === 0) {
+              if (!results || results.length === 0) {
                 setError('Location Not Found. Try Another Name.');
               } else {
                 setCoords({
@@ -135,12 +146,12 @@ export default function Dashboard() {
   const sources = [
     {
       title: 'AQICN',
-      aqi: aq.data.aqi,
+      aqi: aq.data.aqi ?? 0,
       comps: Object.fromEntries(
-        Object.entries(aq.data.iaqi).map(([k, v]: any) => [k, v.v])
+        Object.entries(aq.data.iaqi ?? {}).map(([k, v]: any) => [k, v.v ?? 0])
       ),
-      time: new Date(aq.data.time.iso).toLocaleString(),
-    }
+      time: new Date(aq.data.time?.iso ?? Date.now()).toLocaleString(),
+    },
   ];
 
   return (
@@ -149,11 +160,7 @@ export default function Dashboard() {
 
       <div className="grid">
         {sources.map(({ title, aqi, comps, time }) => (
-          <div
-            key={title}
-            className="card"
-            style={{ borderLeft: `6px solid ${aqColor(aqi)}` }}
-          >
+          <div key={title} className="card" style={{ borderLeft: `6px solid ${aqColor(aqi)}` }}>
             <h2>{title}</h2>
             <p className="aqi">AQI: {aqi}</p>
             <p>Time: {time}</p>
