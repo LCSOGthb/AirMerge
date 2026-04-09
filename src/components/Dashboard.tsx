@@ -83,7 +83,9 @@ export default function Dashboard() {
                 dt: d.time ? new Date(d.time).getTime() / 1000 : null,
                 aqi: d.avg ?? null,
               }))
-              .filter((item: Pollutant) => item.dt !== null && item.aqi !== null),
+              .filter(
+                (item: Pollutant) => item.dt !== null && item.aqi !== null,
+              ),
           );
         } else if (dailyPm25.length > 0) {
           const today = dailyPm25[0];
