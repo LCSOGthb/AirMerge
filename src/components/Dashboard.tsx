@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { fetchAqicn } from '../api';
-import ChartComp from './ChartComp';
-import MapComp from './MapComp';
-import './Dashboard.css';
+import React, { useEffect, useState } from "react";
+import { fetchAqicn } from "../api";
+import ChartComp from "./ChartComp";
+import MapComp from "./MapComp";
+import "./Dashboard.css";
 
-type Pollutant = { dt: number; aqi: number };
+type Pollutant = { dt: number | null; aqi: number | null };
 type Coords = { lat: number; lon: number };
 
 export default function Dashboard() {
@@ -19,7 +19,7 @@ export default function Dashboard() {
   // Ask for GPS once on mount
   useEffect(() => {
     if (!navigator.geolocation) {
-      setError('Geolocation is not supported by this browser.');
+      setError("Geolocation is not supported by this browser.");
       return;
     }
     navigator.geolocation.getCurrentPosition(
@@ -30,20 +30,21 @@ export default function Dashboard() {
         let msg: string;
         switch (err.code) {
           case err.PERMISSION_DENIED:
-            msg = 'Permission Denied. Please allow location access in your browser settings.';
+            msg =
+              "Permission Denied. Please allow location access in your browser settings.";
             break;
           case err.POSITION_UNAVAILABLE:
-            msg = 'Location Information is Unavailable.';
+            msg = "Location Information is Unavailable.";
             break;
           case err.TIMEOUT:
-            msg = 'The request to get your location timed out.';
+            msg = "The request to get your location timed out.";
             break;
           default:
-            msg = 'An Unknown Error Occurred.';
+            msg = "An Unknown Error Occurred.";
         }
-        console.error('Geolocation Error', err.code, err.message);
+        console.error("Geolocation Error", err.code, err.message);
         setError(msg);
-      }
+      },
     );
   }, []);
 
@@ -52,51 +53,68 @@ export default function Dashboard() {
     if (!coords) return;
 
     const { lat, lon } = coords;
-    fetchAqicn(lat, lon).then((data) => {
-      setAq(data);
-
-      // Prepare forecast (next 4 days) from AQICN
-      if (data.data.forecast?.daily?.pm25) {
-        const forecast = data.data.forecast.daily.pm25.map((d: any) => ({
-          dt: new Date(d.day).getTime() / 1000,
-          aqi: d.avg
-        }));
-        setForecastData(forecast);
-      }
-
-      // Prepare historical (last 24h) if available
-      // AQICN free API doesn't always give hourly history directly — if not available, fallback to past 1 day daily
-      if (data.data.forecast?.hourly?.pm25) {
-        const history = data.data.forecast.hourly.pm25.map((d: any) => ({
-          dt: new Date(d.time).getTime() / 1000,
-          aqi: d.avg
-        }));
-        setHistData(history);
-      } else {
-        // fallback: repeat today's daily avg as a placeholder
-        if (data.data.forecast?.daily?.pm25?.length > 0) {
-          const today = data.data.forecast.daily.pm25[0];
-          setHistData([
-            { dt: Date.now() / 1000 - 86400, aqi: today.avg },
-            { dt: Date.now() / 1000, aqi: today.avg }
-          ]);
+    fetchAqicn(lat, lon)
+      .then((data) => {
+        if (!data?.data) {
+          console.error("Invalid API response:", data);
+          setError("Failed to load AQI data");
+          setAq(null);
+          return;
         }
-      }
-    });
+        setAq(data);
+
+        // Forecast (next 4 days)
+        const dailyPm25 = data.data.forecast?.daily?.pm25 ?? [];
+        setForecastData(
+          dailyPm25
+            .map((d: any) => ({
+              dt: d.day ? new Date(d.day).getTime() / 1000 : null,
+              aqi: d.avg ?? null,
+            }))
+            .filter((item: Pollutant) => item.dt !== null && item.aqi !== null),
+        );
+
+        // Historical (last 24h) or fallback
+        const hourlyPm25 = data.data.forecast?.hourly?.pm25 ?? [];
+        if (hourlyPm25.length > 0) {
+          setHistData(
+            hourlyPm25
+              .map((d: any) => ({
+                dt: d.time ? new Date(d.time).getTime() / 1000 : null,
+                aqi: d.avg ?? null,
+              }))
+              .filter(
+                (item: Pollutant) => item.dt !== null && item.aqi !== null,
+              ),
+          );
+        } else if (dailyPm25.length > 0) {
+          const today = dailyPm25[0];
+          setHistData([
+            { dt: Date.now() / 1000 - 86400, aqi: today.avg ?? null },
+            { dt: Date.now() / 1000, aqi: today.avg ?? null },
+          ]);
+        } else {
+          setHistData([]);
+        }
+      })
+      .catch((err) => {
+        console.error("Failed to fetch AQI:", err);
+        setError("Failed to fetch AQI data");
+        setAq(null);
+      });
   }, [coords]);
 
-  // Manual-entry + waiting state
   if (!coords) {
     return (
       <div className="dashboard">
-        <p>{error || 'Waiting For Location…'}</p>
+        <p>{error || "Waiting For Location…"}</p>
         <button
           onClick={async () => {
             const input = window.prompt(
-              'Enter location as "lat,lon" or Place Name (e.g. "Kuala Lumpur")'
+              'Enter location as "lat,lon" or Place Name (e.g. "Kuala Lumpur")',
             );
             if (!input) return;
-            const parts = input.split(',').map(s => s.trim());
+            const parts = input.split(",").map((s) => s.trim());
             if (parts.length === 2 && !isNaN(+parts[0]) && !isNaN(+parts[1])) {
               setCoords({ lat: +parts[0], lon: +parts[1] });
               setError(null);
@@ -104,11 +122,13 @@ export default function Dashboard() {
             }
             try {
               const resp = await fetch(
-                `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(input)}&format=json&limit=1`
+                `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
+                  input,
+                )}&format=json&limit=1`,
               );
               const results = await resp.json();
-              if (results.length === 0) {
-                setError('Location Not Found. Try Another Name.');
+              if (!results || results.length === 0) {
+                setError("Location Not Found. Try Another Name.");
               } else {
                 setCoords({
                   lat: parseFloat(results[0].lat),
@@ -117,8 +137,8 @@ export default function Dashboard() {
                 setError(null);
               }
             } catch (e: any) {
-              console.error('Geocoding Error', e);
-              setError('Geocoding Failed. Please Try Again.');
+              console.error("Geocoding Error", e);
+              setError("Geocoding Failed. Please Try Again.");
             }
           }}
         >
@@ -134,13 +154,13 @@ export default function Dashboard() {
 
   const sources = [
     {
-      title: 'AQICN',
-      aqi: aq.data.aqi,
+      title: "AQICN",
+      aqi: aq.data.aqi ?? 0,
       comps: Object.fromEntries(
-        Object.entries(aq.data.iaqi).map(([k, v]: any) => [k, v.v])
+        Object.entries(aq.data.iaqi ?? {}).map(([k, v]: any) => [k, v.v ?? 0]),
       ),
-      time: new Date(aq.data.time.iso).toLocaleString(),
-    }
+      time: new Date(aq.data.time?.iso ?? Date.now()).toLocaleString(),
+    },
   ];
 
   return (
@@ -183,10 +203,10 @@ export default function Dashboard() {
 }
 
 function aqColor(aqi: number) {
-  if (aqi <= 50) return '#009966';
-  if (aqi <= 100) return '#ffde33';
-  if (aqi <= 150) return '#ff9933';
-  if (aqi <= 200) return '#cc0033';
-  if (aqi <= 300) return '#660099';
-  return '#7e0023';
+  if (aqi <= 50) return "#009966";
+  if (aqi <= 100) return "#ffde33";
+  if (aqi <= 150) return "#ff9933";
+  if (aqi <= 200) return "#cc0033";
+  if (aqi <= 300) return "#660099";
+  return "#7e0023";
 }
