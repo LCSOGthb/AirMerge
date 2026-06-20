@@ -4,65 +4,31 @@
   "private": true,
   "dependencies": {
     "@sentry/react": "^10.47.0",
-    "@testing-library/dom": "^10.4.0",
-    "@testing-library/jest-dom": "^6.6.3",
-    "@testing-library/react": "^16.3.0",
-    "@testing-library/user-event": "^14.6.1",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
-    "@types/jest": "^27.5.2",
+    "@types/leaflet": "^1.9.20",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
-    "ajv": "^8.18.0",
-    "ajv-keywords": "^5.1.0",
     "axios": "^1.16.0",
     "chart.js": "^4.5.0",
     "cors": "^2.8.6",
     "express": "^5.2.1",
-    "http-proxy-middleware": "^3.0.7",
     "leaflet": "^1.9.4",
     "react": "^19.1.0",
     "react-chartjs-2": "^5.3.0",
     "react-dom": "^19.2.3",
     "react-leaflet": "^5.0.0",
-    "react-scripts": "5.0.1",
-    "ts-node": "^10.9.2",
-    "typescript": "^4.9.5",
-    "web-vitals": "^2.1.4"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "start:api": "node server.js",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "typescript": "^5.0.0"
   },
   "devDependencies": {
-    "@types/leaflet": "^1.9.20",
     "@types/node": "^24.1.0",
-    "@types/react-leaflet": "^2.8.3"
+    "@vitejs/plugin-react": "^4.3.0",
+    "vite": "^6.0.0"
   },
-  "overrides": {
-    "serialize-javascript": ">=7.0.5",
-    "nth-check": ">=2.0.1",
-    "uuid": ">=9.0.0"
+  "scripts": {
+    "start": "vite",
+    "start:api": "node server.js",
+    "build": "vite build",
+    "preview": "vite preview"
   }
 }
