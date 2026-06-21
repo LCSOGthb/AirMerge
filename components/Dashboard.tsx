@@ -21,26 +21,67 @@ export default function Dashboard() {
   const [aq, setAq] = useState<any>(null);
   const [histData, setHistData] = useState<Pollutant[]>([]);
   const [forecastData, setForecastData] = useState<Pollutant[]>([]);
+  const [manualInput, setManualInput] = useState("");
+  const [showManualInput, setShowManualInput] = useState(false);
+  const [locationLoading, setLocationLoading] = useState(false);
 
-  useEffect(() => {
+  const handleGeolocation = () => {
     if (!navigator.geolocation) {
       setError("Geolocation is not supported by this browser.");
+      setShowManualInput(true);
       return;
     }
+    setLocationLoading(true);
+    setError(null);
     navigator.geolocation.getCurrentPosition(
       ({ coords: { latitude, longitude } }) => {
         setCoords({ lat: latitude, lon: longitude });
+        setLocationLoading(false);
       },
       (err) => {
+        setLocationLoading(false);
         const msgs: Record<number, string> = {
-          1: "Permission Denied. Please allow location access in your browser settings.",
-          2: "Location Information is Unavailable.",
-          3: "The request to get your location timed out.",
+          1: "Location permission was denied. You can enter your location manually below.",
+          2: "Location information is unavailable. Please enter your location manually.",
+          3: "Location request timed out. Please try again or enter manually.",
         };
-        setError(msgs[err.code] ?? "An Unknown Error Occurred.");
+        setError(msgs[err.code] ?? "An unknown error occurred.");
+        setShowManualInput(true);
       },
     );
-  }, []);
+  };
+
+  const handleManualSubmit = async () => {
+    const input = manualInput.trim();
+    if (!input) return;
+    setError(null);
+    setLocationLoading(true);
+
+    const parts = input.split(",").map((s) => s.trim());
+    if (parts.length === 2 && !isNaN(+parts[0]) && !isNaN(+parts[1])) {
+      setCoords({ lat: +parts[0], lon: +parts[1] });
+      setLocationLoading(false);
+      return;
+    }
+
+    try {
+      const resp = await fetch(
+        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(input)}&format=json&limit=1`,
+      );
+      const results = await resp.json();
+      if (!results?.length) {
+        setError("Location not found. Try another name or enter coordinates (lat, lon).");
+      } else {
+        setCoords({
+          lat: parseFloat(results[0].lat),
+          lon: parseFloat(results[0].lon),
+        });
+      }
+    } catch {
+      setError("Geocoding failed. Please try again.");
+    }
+    setLocationLoading(false);
+  };
 
   useEffect(() => {
     if (!coords) return;
@@ -96,40 +137,54 @@ export default function Dashboard() {
     return (
       <div className="dashboard prompt-state">
         <h1>AirMerge</h1>
-        <p>{error || "Waiting For Location\u2026"}</p>
-        <button
-          onClick={async () => {
-            const input = window.prompt(
-              'Enter location as "lat,lon" or Place Name (e.g. "Kuala Lumpur")',
-            );
-            if (!input) return;
-            const parts = input.split(",").map((s) => s.trim());
-            if (parts.length === 2 && !isNaN(+parts[0]) && !isNaN(+parts[1])) {
-              setCoords({ lat: +parts[0], lon: +parts[1] });
-              setError(null);
-              return;
-            }
-            try {
-              const resp = await fetch(
-                `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(input)}&format=json&limit=1`,
-              );
-              const results = await resp.json();
-              if (!results?.length) {
-                setError("Location Not Found. Try Another Name.");
-              } else {
-                setCoords({
-                  lat: parseFloat(results[0].lat),
-                  lon: parseFloat(results[0].lon),
-                });
-                setError(null);
-              }
-            } catch {
-              setError("Geocoding Failed. Please Try Again.");
-            }
-          }}
-        >
-          Enter Location Manually
-        </button>
+
+        <div className="location-prompt">
+          <h2>Set Your Location</h2>
+          <p style={{ marginBottom: "1rem", color: "var(--text-secondary)", fontSize: "0.95rem" }}>
+            Choose how you&apos;d like to provide your location to view local air quality data.
+          </p>
+
+          <div className="location-actions">
+            <button
+              className="btn-primary"
+              onClick={handleGeolocation}
+              disabled={locationLoading}
+            >
+              {locationLoading ? "Detecting Location\u2026" : "Use My Location"}
+            </button>
+
+            <button onClick={() => setShowManualInput(!showManualInput)}>
+              Enter Location Manually
+            </button>
+          </div>
+
+          {showManualInput && (
+            <div className="manual-input-group">
+              <input
+                type="text"
+                placeholder='City name or "lat, lon"'
+                value={manualInput}
+                onChange={(e) => setManualInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleManualSubmit();
+                }}
+              />
+              <button onClick={handleManualSubmit} disabled={locationLoading}>
+                Go
+              </button>
+            </div>
+          )}
+
+          {error && <div className="location-error">{error}</div>}
+
+          <div className="location-disclaimer">
+            <strong>Privacy Note:</strong> The &quot;Use My Location&quot; button will ask
+            your browser for permission to access your device&apos;s GPS coordinates. This
+            data is only used to fetch air quality information for your area and is never
+            stored or shared. If you prefer not to grant location access, use the manual
+            input option above instead.
+          </div>
+        </div>
       </div>
     );
   }
@@ -194,12 +249,16 @@ export default function Dashboard() {
 
       <div className="viz-row">
         <div className="chart-container">
-          <h2>📊 Historical (24h) & Forecast (4d)</h2>
-          <ChartComp hist={histData} fore={forecastData} />
+          <h2>📊 Historical (24h) &amp; Forecast (4d)</h2>
+          <div className="chart-wrapper">
+            <ChartComp hist={histData} fore={forecastData} />
+          </div>
         </div>
         <div className="map-container">
           <h2>🗺️ Map Overlay</h2>
-          <MapComp lat={coords.lat} lon={coords.lon} />
+          <div className="map-wrapper">
+            <MapComp lat={coords.lat} lon={coords.lon} />
+          </div>
         </div>
       </div>
     </div>

@@ -12,5 +12,9 @@ export default function ChartComp({ hist, fore }: { hist: any[]; fore: any[] }) 
       { label: 'Forecast AQI', data: fore.map((d) => d.aqi), borderColor: 'green', tension: 0.4 },
     ],
   };
-  return <Line data={data} />;
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+  };
+  return <Line data={data} options={options} />;
 }
