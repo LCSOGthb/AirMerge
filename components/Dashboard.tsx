@@ -70,7 +70,9 @@ export default function Dashboard() {
       );
       const results = await resp.json();
       if (!results?.length) {
-        setError("Location not found. Try another name or enter coordinates (lat, lon).");
+        setError(
+          "Location not found. Try another name or enter coordinates (lat, lon).",
+        );
       } else {
         setCoords({
           lat: parseFloat(results[0].lat),
@@ -140,8 +142,15 @@ export default function Dashboard() {
 
         <div className="location-prompt">
           <h2>Set Your Location</h2>
-          <p style={{ marginBottom: "1rem", color: "var(--text-secondary)", fontSize: "0.95rem" }}>
-            Choose how you&apos;d like to provide your location to view local air quality data.
+          <p
+            style={{
+              marginBottom: "1rem",
+              color: "var(--text-secondary)",
+              fontSize: "0.95rem",
+            }}
+          >
+            Choose how you&apos;d like to provide your location to view local
+            air quality data.
           </p>
 
           <div className="location-actions">
@@ -178,11 +187,12 @@ export default function Dashboard() {
           {error && <div className="location-error">{error}</div>}
 
           <div className="location-disclaimer">
-            <strong>Privacy Note:</strong> The &quot;Use My Location&quot; button will ask
-            your browser for permission to access your device&apos;s GPS coordinates. This
-            data is only used to fetch air quality information for your area and is never
-            stored or shared. If you prefer not to grant location access, use the manual
-            input option above instead.
+            <strong>Privacy Note:</strong> The &quot;Use My Location&quot;
+            button will ask your browser for permission to access your
+            device&apos;s GPS coordinates. This data is only used to fetch air
+            quality information for your area and is never stored or shared. If
+            you prefer not to grant location access, use the manual input option
+            above instead.
           </div>
         </div>
       </div>
