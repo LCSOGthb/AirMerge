@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const TOKEN = process.env.AQICN_TOKEN;
-
 export async function GET(req: NextRequest) {
-  if (!TOKEN) {
+  const token = process.env.AQICN_TOKEN;
+  if (!token) {
     return NextResponse.json({ error: 'Missing AQICN_TOKEN' }, { status: 500 });
   }
 
@@ -18,7 +17,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const url = new URL(`https://api.waqi.info/feed/geo:${lat};${lon}/`);
-    url.searchParams.set('token', TOKEN);
+    url.searchParams.set('token', token);
     const res = await fetch(url.toString());
     const data = await res.json();
     return NextResponse.json(data, { status: res.status });

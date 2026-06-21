@@ -1,12 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const OW_KEY = process.env.OW_KEY;
-
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ type: string }> }
 ) {
-  if (!OW_KEY) {
+  const owKey = process.env.OW_KEY;
+  if (!owKey) {
     return NextResponse.json({ error: 'Missing OW_KEY' }, { status: 500 });
   }
 
@@ -27,7 +26,7 @@ export async function GET(
   }
 
   try {
-    const url = `https://api.openweathermap.org/data/2.5/${endpoint}&appid=${OW_KEY}`;
+    const url = `https://api.openweathermap.org/data/2.5/${endpoint}&appid=${owKey}`;
     const res = await fetch(url);
     const data = await res.json();
     return NextResponse.json(data, { status: res.status });
