@@ -1,10 +1,14 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 
-const TOKEN = process.env.AQICN_TOKEN!;
-if (!TOKEN) throw new Error("Missing environment variable AQICN_TOKEN");
-
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
+    const token = process.env.AQICN_TOKEN;
+    if (!token) {
+      return res
+        .status(500)
+        .json({ error: "Missing environment variable AQICN_TOKEN" });
+    }
+
     const rawLat = Array.isArray(req.query.lat)
       ? req.query.lat[0]
       : req.query.lat;
@@ -25,7 +29,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     const url = new URL(`https://api.waqi.info/feed/geo:${lat};${lon}/`);
-    url.searchParams.set("token", TOKEN);
+    url.searchParams.set("token", token);
 
     const apiRes = await fetch(url.toString());
     const data = await apiRes.json();
