@@ -92,8 +92,9 @@ export default function Dashboard() {
 
   if (!coords) {
     return (
-      <div className="dashboard">
-        <p>{error || 'Waiting For Location…'}</p>
+      <div className="dashboard prompt-state">
+        <h1>AirMerge</h1>
+        <p>{error || 'Waiting For Location\u2026'}</p>
         <button
           onClick={async () => {
             const input = window.prompt(
@@ -129,7 +130,24 @@ export default function Dashboard() {
   }
 
   if (!aq) {
-    return <div className="dashboard">Loading Air Quality…</div>;
+    return (
+      <div className="dashboard">
+        <h1>AirMerge</h1>
+        <div className="loading-state">
+          <div className="spinner" />
+          <p>Loading Air Quality\u2026</p>
+        </div>
+        <div className="skeleton-grid">
+          <div className="skeleton-card">
+            <div className="skeleton-line tall" />
+            <div className="skeleton-line wide" />
+            <div className="skeleton-line short" />
+            <div className="skeleton-line wide" />
+            <div className="skeleton-line short" />
+          </div>
+        </div>
+      </div>
+    );
   }
 
   const sources = [
