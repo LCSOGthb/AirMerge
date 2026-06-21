@@ -199,20 +199,53 @@
   border-bottom: none;
 }
 
-/* ── Chart & Map Containers ──────────────────────────── */
+/* ── Visualization Row (chart left, map right) ───────── */
+
+.viz-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+  margin-top: 2rem;
+}
 
 .chart-container,
 .map-container {
-  margin: 1.5rem 0;
+  background: #fff;
+  border-radius: 1rem;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   animation: fadeInUp 0.6s ease-out both;
+  transition:
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
+}
+
+.chart-container:hover,
+.map-container:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
 }
 
 .chart-container {
   animation-delay: 0.1s;
 }
 
+.chart-container h2,
+.map-container h2 {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  font-size: 1.15rem;
+}
+
 .map-container {
   animation-delay: 0.2s;
+}
+
+@media (max-width: 768px) {
+  .viz-row {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ── Loading State ───────────────────────────────────── */
