@@ -34,7 +34,7 @@ outputType = "webview"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "pnpm start:api & pnpm start"
+args = "pnpm dev"
 waitForPort = 5000
 
 [[ports]]
@@ -43,8 +43,8 @@ externalPort = 80
 
 [deployment]
 deploymentTarget = "autoscale"
-run = ["bash", "-c", "node server.js & npx serve -s dist -l 5000"]
-build = ["bash", "-c", "pnpm install && pnpm run build"]
+run = ["bash", "-c", "pnpm serve"]
+build = ["bash", "-c", "pnpm install && pnpm build"]
 
 [postMerge]
 path = "scripts/post-merge.sh"
