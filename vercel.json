@@ -1,8 +1,14 @@
 {
+<<<<<<< HEAD
   "installCommand": "npm install --legacy-peer-deps",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "git": {
     "deploymentEnabled": false
   }
+=======
+  "installCommand": "pnpm install",
+  "buildCommand": "pnpm run build",
+  "outputDirectory": "dist"
+>>>>>>> b34b77b (Switch to pnpm for dependency management to resolve build failures)
 }
