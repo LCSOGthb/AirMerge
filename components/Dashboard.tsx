@@ -192,14 +192,15 @@ export default function Dashboard() {
         ))}
       </div>
 
-      <h2>📊 Historical (24h) & Forecast (4d)</h2>
-      <div className="chart-container">
-        <ChartComp hist={histData} fore={forecastData} />
-      </div>
-
-      <h2>🗺️ Map Overlay</h2>
-      <div className="map-container">
-        <MapComp lat={coords.lat} lon={coords.lon} />
+      <div className="viz-row">
+        <div className="chart-container">
+          <h2>📊 Historical (24h) & Forecast (4d)</h2>
+          <ChartComp hist={histData} fore={forecastData} />
+        </div>
+        <div className="map-container">
+          <h2>🗺️ Map Overlay</h2>
+          <MapComp lat={coords.lat} lon={coords.lon} />
+        </div>
       </div>
     </div>
   );
