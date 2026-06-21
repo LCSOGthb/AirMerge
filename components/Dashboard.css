@@ -12,29 +12,45 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes shimmer {
-  0%   { background-position: -400px 0; }
-  100% { background-position: 400px 0; }
+  0% {
+    background-position: -400px 0;
+  }
+  100% {
+    background-position: 400px 0;
+  }
 }
 
 @keyframes pulseGlow {
-  0%, 100% { text-shadow: 0 0 0 transparent; }
-  50%      { text-shadow: 0 0 8px rgba(0, 153, 102, 0.4); }
+  0%,
+  100% {
+    text-shadow: 0 0 0 transparent;
+  }
+  50% {
+    text-shadow: 0 0 8px rgba(0, 153, 102, 0.4);
+  }
 }
 
 @keyframes spinnerRotate {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* ── Dashboard Shell ─────────────────────────────────── */
 
 .dashboard {
   padding: 1.5rem 2rem;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
   color: #333;
   min-height: 100vh;
@@ -148,16 +164,36 @@
   animation: fadeInUp 0.35s ease-out forwards;
 }
 
-.components li:nth-child(1)  { animation-delay: 0.05s; }
-.components li:nth-child(2)  { animation-delay: 0.10s; }
-.components li:nth-child(3)  { animation-delay: 0.15s; }
-.components li:nth-child(4)  { animation-delay: 0.20s; }
-.components li:nth-child(5)  { animation-delay: 0.25s; }
-.components li:nth-child(6)  { animation-delay: 0.30s; }
-.components li:nth-child(7)  { animation-delay: 0.35s; }
-.components li:nth-child(8)  { animation-delay: 0.40s; }
-.components li:nth-child(9)  { animation-delay: 0.45s; }
-.components li:nth-child(10) { animation-delay: 0.50s; }
+.components li:nth-child(1) {
+  animation-delay: 0.05s;
+}
+.components li:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.components li:nth-child(3) {
+  animation-delay: 0.15s;
+}
+.components li:nth-child(4) {
+  animation-delay: 0.2s;
+}
+.components li:nth-child(5) {
+  animation-delay: 0.25s;
+}
+.components li:nth-child(6) {
+  animation-delay: 0.3s;
+}
+.components li:nth-child(7) {
+  animation-delay: 0.35s;
+}
+.components li:nth-child(8) {
+  animation-delay: 0.4s;
+}
+.components li:nth-child(9) {
+  animation-delay: 0.45s;
+}
+.components li:nth-child(10) {
+  animation-delay: 0.5s;
+}
 
 .components li:last-child {
   border-bottom: none;
@@ -250,9 +286,17 @@
   margin-bottom: 0.75rem;
 }
 
-.skeleton-line.wide  { width: 80%; }
-.skeleton-line.short { width: 50%; }
-.skeleton-line.tall  { height: 24px; width: 40%; margin-bottom: 1rem; }
+.skeleton-line.wide {
+  width: 80%;
+}
+.skeleton-line.short {
+  width: 50%;
+}
+.skeleton-line.tall {
+  height: 24px;
+  width: 40%;
+  margin-bottom: 1rem;
+}
 
 /* ── Reduced Motion ──────────────────────────────────── */
 
