@@ -239,6 +239,7 @@
 }
 
 .map-container {
+  min-height: 350px;
   animation-delay: 0.2s;
 }
 
