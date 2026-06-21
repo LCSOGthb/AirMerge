@@ -1,25 +1,25 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: Promise<{ type: string }> }
+  { params }: { params: Promise<{ type: string }> },
 ) {
   const owKey = process.env.OW_KEY;
   if (!owKey) {
-    return NextResponse.json({ error: 'Missing OW_KEY' }, { status: 500 });
+    return NextResponse.json({ error: "Missing OW_KEY" }, { status: 500 });
   }
 
   const { type } = await params;
   const { searchParams } = new URL(req.url);
-  const lat = searchParams.get('lat');
-  const lon = searchParams.get('lon');
-  const start = searchParams.get('start');
-  const end = searchParams.get('end');
+  const lat = searchParams.get("lat");
+  const lon = searchParams.get("lon");
+  const start = searchParams.get("start");
+  const end = searchParams.get("end");
 
   let endpoint: string;
-  if (type === 'history') {
+  if (type === "history") {
     endpoint = `air_pollution/history?lat=${lat}&lon=${lon}&start=${start}&end=${end}`;
-  } else if (type === 'forecast') {
+  } else if (type === "forecast") {
     endpoint = `air_pollution/forecast?lat=${lat}&lon=${lon}`;
   } else {
     endpoint = `air_pollution?lat=${lat}&lon=${lon}`;
