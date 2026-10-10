@@ -51,8 +51,12 @@
   padding: 1.5rem 2rem;
   font-family:
     -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
-  color: #333;
+  background: linear-gradient(
+    135deg,
+    var(--bg-gradient-start) 0%,
+    var(--bg-gradient-end) 100%
+  );
+  color: var(--text-primary);
   min-height: 100vh;
   animation: fadeIn 0.5s ease-out;
 }
@@ -84,10 +88,11 @@
   font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
-  border: 1px solid #d0d5dd;
+  border: 1px solid var(--border-color);
   border-radius: 0.5rem;
-  background: #fff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  background: var(--card-bg);
+  color: var(--text-primary);
+  box-shadow: 0 1px 3px var(--card-shadow);
   transition:
     background-color 0.2s ease,
     box-shadow 0.25s ease,
@@ -95,14 +100,14 @@
 }
 
 .dashboard button:hover {
-  background: #f0f4ff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: var(--btn-hover-bg);
+  box-shadow: 0 4px 12px var(--card-shadow-hover);
   transform: translateY(-1px);
 }
 
 .dashboard button:active {
   transform: translateY(0);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 3px var(--card-shadow);
 }
 
 /* ── Card Grid ───────────────────────────────────────── */
@@ -117,9 +122,9 @@
 /* ── Card ────────────────────────────────────────────── */
 
 .card {
-  background: #fff;
+  background: var(--card-bg);
   border-radius: 0.75rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 8px var(--card-shadow);
   padding: 1.25rem;
   line-height: 1.5;
   animation: fadeInUp 0.5s ease-out both;
@@ -129,7 +134,7 @@
 }
 
 .card:hover {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 8px 24px var(--card-shadow-hover);
   transform: translateY(-4px);
 }
 
@@ -159,7 +164,7 @@
   justify-content: space-between;
   font-size: 0.9rem;
   padding: 0.3rem 0;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid var(--border-light);
   opacity: 0;
   animation: fadeInUp 0.35s ease-out forwards;
 }
@@ -205,25 +210,27 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5rem;
-  align-items: start;
+  align-items: stretch;
   margin-top: 2rem;
 }
 
 .chart-container,
 .map-container {
-  background: #fff;
+  background: var(--card-bg);
   border-radius: 1rem;
   padding: 1.25rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 8px var(--card-shadow);
   animation: fadeInUp 0.6s ease-out both;
   transition:
     box-shadow 0.3s ease,
     transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
 }
 
 .chart-container:hover,
 .map-container:hover {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 8px 24px var(--card-shadow-hover);
   transform: translateY(-2px);
 }
 
@@ -238,14 +245,46 @@
   font-size: 1.15rem;
 }
 
+.chart-container .chart-wrapper {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+}
+
 .map-container {
-  min-height: 350px;
   animation-delay: 0.2s;
+}
+
+.map-container .map-wrapper {
+  flex: 1;
+  min-height: 250px;
 }
 
 @media (max-width: 768px) {
   .viz-row {
     grid-template-columns: 1fr;
+  }
+
+  .chart-container .chart-wrapper {
+    min-height: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard {
+    padding: 1rem;
+  }
+
+  .dashboard h1 {
+    font-size: 1.5rem;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .viz-row {
+    gap: 1rem;
   }
 }
 
@@ -264,15 +303,15 @@
 .spinner {
   width: 40px;
   height: 40px;
-  border: 3px solid #e0e0e0;
-  border-top-color: #009966;
+  border: 3px solid var(--spinner-track);
+  border-top-color: var(--spinner-active);
   border-radius: 50%;
   animation: spinnerRotate 0.8s linear infinite;
 }
 
 .loading-state p {
   font-size: 1.1rem;
-  color: #666;
+  color: var(--text-muted);
 }
 
 /* ── Error / Prompt State ────────────────────────────── */
@@ -290,9 +329,104 @@
 
 .prompt-state p {
   font-size: 1.15rem;
-  color: #555;
+  color: var(--text-secondary);
   max-width: 400px;
   line-height: 1.6;
+}
+
+/* ── Location Prompt ─────────────────────────────────── */
+
+.location-prompt {
+  background: var(--card-bg);
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 2px 12px var(--card-shadow);
+  max-width: 480px;
+  width: 100%;
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.location-prompt h2 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+  animation: none;
+}
+
+.location-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.location-actions button {
+  margin-top: 0;
+  width: 100%;
+  padding: 0.75rem 1.25rem;
+  font-size: 1rem;
+}
+
+.btn-primary {
+  background: var(--spinner-active) !important;
+  color: #fff !important;
+  border-color: var(--spinner-active) !important;
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+}
+
+.manual-input-group {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.manual-input-group input {
+  flex: 1;
+  padding: 0.6rem 0.75rem;
+  font-size: 0.95rem;
+  border: 1px solid var(--input-border);
+  border-radius: 0.5rem;
+  background: var(--input-bg);
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.manual-input-group input:focus {
+  border-color: var(--spinner-active);
+}
+
+.manual-input-group button {
+  margin-top: 0;
+  white-space: nowrap;
+}
+
+.location-disclaimer {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  background: var(--disclaimer-bg);
+  border: 1px solid var(--disclaimer-border);
+  border-radius: 0.5rem;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.location-disclaimer strong {
+  color: var(--text-primary);
+}
+
+.location-error {
+  margin-top: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: rgba(204, 0, 51, 0.08);
+  border: 1px solid rgba(204, 0, 51, 0.2);
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  color: #cc0033;
 }
 
 /* ── Skeleton Placeholders ───────────────────────────── */
@@ -305,16 +439,21 @@
 }
 
 .skeleton-card {
-  background: #fff;
+  background: var(--card-bg);
   border-radius: 0.75rem;
   padding: 1.25rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2px 8px var(--card-shadow);
 }
 
 .skeleton-line {
   height: 14px;
   border-radius: 4px;
-  background: linear-gradient(90deg, #eee 25%, #f5f5f5 50%, #eee 75%);
+  background: linear-gradient(
+    90deg,
+    var(--skeleton-base) 25%,
+    var(--skeleton-highlight) 50%,
+    var(--skeleton-base) 75%
+  );
   background-size: 400px 100%;
   animation: shimmer 1.5s ease-in-out infinite;
   margin-bottom: 0.75rem;
