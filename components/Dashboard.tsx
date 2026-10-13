@@ -205,7 +205,7 @@ export default function Dashboard() {
         <h1>AirMerge</h1>
         <div className="loading-state">
           <div className="spinner" />
-          <p>Loading Air Quality\u2026</p>
+          <p>Loading Air Quality{"\u2026"}</p>
         </div>
         <div className="skeleton-grid">
           <div className="skeleton-card">

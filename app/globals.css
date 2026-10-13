@@ -64,20 +64,8 @@ body {
 }
 
 .leaflet-container {
-  height: 350px;
+  height: 100%;
   width: 100%;
   border-radius: 0.75rem;
   overflow: hidden;
-}
-
-@media (max-width: 768px) {
-  .leaflet-container {
-    height: 280px;
-  }
-}
-
-@media (max-width: 480px) {
-  .leaflet-container {
-    height: 220px;
-  }
 }
